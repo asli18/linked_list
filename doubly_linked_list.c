@@ -79,19 +79,15 @@ void insert_node(Node **start, int insert_after_value, int value)
         if (insert_after_value == current->data) {
             Node *new_node = (Node *)malloc(sizeof(Node));
             new_node->data = value;
-            new_node->next = NULL;
-            new_node->prev = NULL;
-            if (current->next == NULL) {
-                current->next = new_node;
-                new_node->prev = current;
-                break;
-            } else {
-                new_node->next = current->next;
+
+            new_node->next = current->next;
+            new_node->prev = current;
+            current->next = new_node;
+
+            if (current->next != NULL)
                 current->next->prev = new_node;
-                current->next = new_node;
-                new_node->prev = current;
-                break;
-            }
+
+            break;
         }
         current = current->next;
     }
