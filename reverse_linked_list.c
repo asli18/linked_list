@@ -7,19 +7,21 @@ typedef struct node {
     unsigned int data;
 } NODE;
 
-void push(NODE **head, unsigned int data) {
+void push(NODE **head, unsigned int data)
+{
     NODE *new = (NODE *)malloc(sizeof(NODE));
-    
+
     new->data = data;
     new->next = *head;
     *head = new;
 }
 
-void reverse(NODE **head) {
+void reverse(NODE **head)
+{
     NODE *pre = NULL;
     NODE *next = NULL;
     NODE *root = *head;
-    
+
     while (root != NULL) {
         next = root->next;
         root->next = pre;
@@ -29,7 +31,8 @@ void reverse(NODE **head) {
     *head = pre;
 }
 
-void print_list(NODE *head) {
+void print_list(NODE *head)
+{
     while (head != NULL) {
         printf("%02u ", head->data);
         head = head->next;
@@ -37,7 +40,8 @@ void print_list(NODE *head) {
     printf("\r\n");
 }
 
-int main() {
+int main()
+{
     NODE *head = NULL;
 
     push(&head, 4);
@@ -47,9 +51,9 @@ int main() {
     push(&head, 0);
 
     print_list(head);
-    
+
     reverse(&head);
     print_list(head);
 
-	return 0;
+    return 0;
 }
