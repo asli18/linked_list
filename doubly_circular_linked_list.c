@@ -7,7 +7,7 @@ typedef struct node {
     struct node *prev;
 } Node;
 
-void add_node(Node **start, int value);
+void add_node(Node **head, int value);
 void print_list(Node *node);
 void inverse_print_list(Node *node);
 void free_list(Node *node);
@@ -27,51 +27,51 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void add_node(Node **start, int value)
+void add_node(Node **head, int value)
 {
     Node *new_node = (Node *)malloc(sizeof(Node));
     new_node->data = value;
     new_node->next = NULL;
     new_node->prev = NULL;
 
-    if (*start == NULL) {
-        *start = new_node;
+    if (*head == NULL) {
+        *head = new_node;
         new_node->next = new_node;
         new_node->prev = new_node;
         return;
     } else {
         Node *current;
-        current = *start;
+        current = *head;
         do {
             current = current->next;
-        } while (current->next != *start);
+        } while (current->next != *head);
         current->next = new_node;
-        new_node->next = *start;
+        new_node->next = *head;
         new_node->prev = current;
-        (*start)->prev = new_node;
+        (*head)->prev = new_node;
         return;
     }
 }
 
 void print_list(Node *node)
 {
-    Node *start = node;
+    Node *head = node;
     printf("List:\n");
     do {
         printf("%d ", node->data);
         node = node->next;
-    } while (node != start);
+    } while (node != head);
     printf("%d\n", node->data);
 }
 
 void inverse_print_list(Node *node)
 {
-    Node *start = node;
+    Node *head = node;
     printf("Inverse List:\n");
     do {
         printf("%d ", node->data);
         node = node->prev;
-    } while (node != start);
+    } while (node != head);
     printf("%d\n", node->data);
 }
 

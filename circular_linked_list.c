@@ -6,9 +6,9 @@ typedef struct node {
     struct node *next;
 } Node;
 
-void add_node(Node **start, int value);
-void insert_node(Node **start, int insert_after_value, int value);
-void delete_node(Node **start, int value);
+void add_node(Node **head, int value);
+void insert_node(Node **head, int insert_after_value, int value);
+void delete_node(Node **head, int value);
 void print_list(Node *node);
 void free_list(Node *node);
 
@@ -40,31 +40,31 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void add_node(Node **start, int value)
+void add_node(Node **head, int value)
 {
     Node *new_node = (Node *)malloc(sizeof(Node));
     new_node->data = value;
     new_node->next = NULL;
 
-    if (*start == NULL) {
-        *start = new_node;
-        (*start)->next = *start;
+    if (*head == NULL) {
+        *head = new_node;
+        (*head)->next = *head;
         return;
     } else {
         Node *current;
-        current = *start;
-        while (current->next != *start) {
+        current = *head;
+        while (current->next != *head) {
             current = current->next;
         }
         current->next = new_node;
-        new_node->next = *start;
+        new_node->next = *head;
         return;
     }
 }
 
-void insert_node(Node **start, int insert_after_value, int value)
+void insert_node(Node **head, int insert_after_value, int value)
 {
-    Node *current = *start;
+    Node *current = *head;
 
     do {
         if (insert_after_value == current->data) {
@@ -76,22 +76,22 @@ void insert_node(Node **start, int insert_after_value, int value)
             break;
         }
         current = current->next;
-    } while (current != *start);
+    } while (current != *head);
 }
 
-void delete_node(Node **start, int value)
+void delete_node(Node **head, int value)
 {
-    Node *current = *start;
+    Node *current = *head;
     Node *temp;
-    Node *ori_start = *start;
+    Node *ori_head = *head;
 
     if (value == current->data) {
-        *start = current->next;
+        *head = current->next;
         free(current);
         do {
             current = current->next;
-        } while (current->next != ori_start);
-        current->next = *start;
+        } while (current->next != ori_head);
+        current->next = *head;
         return;
     }
 
@@ -103,7 +103,7 @@ void delete_node(Node **start, int value)
             return;
         }
         current = current->next;
-    } while (current != *start);
+    } while (current != *head);
 
 }
 

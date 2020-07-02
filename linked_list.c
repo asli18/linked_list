@@ -1,58 +1,85 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* IDE Output
+ * https://ide.geeksforgeeks.org/8tVHZmpvty
+ * https://ideone.com/eCYrKN
+ */
+
 typedef struct node {
     int data;
     struct node *next;
 } Node;
 
-void add_node(Node **start, int value);
-void insert_node(Node **start, int insert_after_value, int value);
-void delete_node(Node **start, int value);
+void add_node(Node **head, int value);
+void insert_node(Node **head, int insert_after_value, int value);
+void delete_node(Node **head, int value);
+void push_node(Node **head, int data);
+void reverse(Node **head);
 void print_list(Node *node);
 void free_list(Node *node);
 Node *get_intersection_node(Node *headA, Node *headB);
 
-int main(int argc, char *argv[])
+int main(void)
 {
-    // create first node "head"
-    Node *head = NULL;
-    add_node(&head, 5);
-    add_node(&head, 128);
-    add_node(&head, 41);
+    {
+        Node *head = NULL;
 
-    // insert non-exist node, linked list would not have changed
-    insert_node(&head, 77, 92);
-    // insert after node of data 128
-    insert_node(&head, 128, 84);
-    // insert after the last node
-    insert_node(&head, 41, 97);
+        push_node(&head, 4);
+        push_node(&head, 3);
+        push_node(&head, 2);
+        push_node(&head, 1);
+        push_node(&head, 0);
+        print_list(head);
 
-    // delete the first node
-    delete_node(&head, 5);
-    // delete the node of data 41
-    delete_node(&head, 41);
-    // delete the last node
-    delete_node(&head, 97);
+        reverse(&head);
+        print_list(head);
 
-    print_list(head);
-    free_list(head);
+        free_list(head);
+    }
+
+    {
+        Node *head = NULL;
+
+        add_node(&head, 5);
+        add_node(&head, 128);
+        add_node(&head, 41);
+        print_list(head);
+
+        /* insert non-exist node, linked list would not have changed */
+        insert_node(&head, 77, 92);
+        /* insert after node of data 128 */
+        insert_node(&head, 128, 84);
+        /* insert after the last node */
+        insert_node(&head, 41, 97);
+        print_list(head);
+
+        /* delete the first node */
+        delete_node(&head, 5);
+        /* delete the node of data 41 */
+        delete_node(&head, 41);
+        /* delete the last node */
+        delete_node(&head, 97);
+        print_list(head);
+
+        free_list(head);
+    }
 
     return 0;
 }
 
-void add_node(Node **start, int value)
+void add_node(Node **head, int value)
 {
     Node *new_node = (Node *)malloc(sizeof(Node));
     new_node->data = value;
     new_node->next = NULL;
 
-    if (*start == NULL) {
-        *start = new_node;
+    if (*head == NULL) {
+        *head = new_node;
         return;
     } else {
         Node *current;
-        current = *start;
+        current = *head;
         while (current->next != NULL) {
             current = current->next;
         }
@@ -61,9 +88,9 @@ void add_node(Node **start, int value)
     }
 }
 
-void insert_node(Node **start, int insert_after_value, int value)
+void insert_node(Node **head, int insert_after_value, int value)
 {
-    Node *current = *start;
+    Node *current = *head;
 
     while (current != NULL) {
         if (insert_after_value == current->data) {
@@ -78,14 +105,14 @@ void insert_node(Node **start, int insert_after_value, int value)
     }
 }
 
-void delete_node(Node **start, int value)
+void delete_node(Node **head, int value)
 {
-    Node *current = *start;
+    Node *current = *head;
     Node *temp;
 
     if (value == current->data) {
-        *start = current->next;
-        free (current);
+        *head = current->next;
+        free(current);
         return;
     }
 
@@ -100,13 +127,37 @@ void delete_node(Node **start, int value)
     }
 }
 
+void push_node(Node **head, int data)
+{
+    Node *new = (Node *)malloc(sizeof(Node));
+
+    new->data = data;
+    new->next = *head;
+    *head = new;
+}
+
+void reverse(Node **head)
+{
+    Node *cur = *head;
+    Node *prev = NULL;
+    Node *next = NULL;
+
+    while (cur != NULL) {
+        next = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = next;
+    }
+    *head = prev;
+}
+
 void print_list(Node *node)
 {
     while (node != NULL) {
         printf("%d ", node->data);
         node = node->next;
     }
-    printf("\n");
+    printf("\r\n");
 }
 
 void free_list(Node *node)
