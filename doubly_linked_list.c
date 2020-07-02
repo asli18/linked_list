@@ -16,26 +16,27 @@ void free_list(Node *node);
 
 int main(int argc, char *argv[])
 {
-    // create first node "head"
     Node *head = NULL;
+
     add_node(&head, 5);
     add_node(&head, 128);
     add_node(&head, 41);
+    print_list(head);
 
-    // insert non-exist node, linked list would not have changed
+    /* insert non-exist node, linked list would not have changed */
     insert_node(&head, 77, 92);
-    // insert after node of data 128
+    /* insert after node of data 128 */
     insert_node(&head, 128, 84);
-    // insert after the last node
+    /* insert after the last node */
     insert_node(&head, 41, 97);
+    print_list(head);
 
-    // delete the first node
+    /* delete the first node */
     delete_node(&head, 5);
-    // delete the node of data 41
+    /* delete the node of data 41 */
     delete_node(&head, 41);
-    // delete the last node
+    /* delete the last node */
     delete_node(&head, 97);
-
     print_list(head);
 
     Node *last = head;
@@ -82,10 +83,11 @@ void insert_node(Node **head, int insert_after_value, int value)
 
             new_node->next = current->next;
             new_node->prev = current;
-            current->next = new_node;
 
-            if (current->next != NULL)
-                current->next->prev = new_node;
+            if (new_node->next != NULL)
+                new_node->next->prev = new_node;
+
+            current->next = new_node;
 
             break;
         }
@@ -98,7 +100,7 @@ void delete_node(Node **head, int value)
     Node *current = *head;
     Node *temp;
 
-    if (value == current->data) {
+    if ((current != NULL) && (value == current->data)) {
         *head = current->next;
         (*head)->prev = NULL;
         free(current);
@@ -106,11 +108,13 @@ void delete_node(Node **head, int value)
     }
 
     while (current != NULL) {
-        if (current->next->data == value) {
+        if ((current->next != NULL) && (current->next->data == value)) {
             temp = current->next;
             current->next = current->next->next;
+
             if (current->next != NULL)
                 current->next->prev = current;
+
             free(temp);
             return;
         }

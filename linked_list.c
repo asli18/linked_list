@@ -110,14 +110,14 @@ void delete_node(Node **head, int value)
     Node *current = *head;
     Node *temp;
 
-    if (value == current->data) {
+    if ((current != NULL) && (value == current->data)) {
         *head = current->next;
         free(current);
         return;
     }
 
     while (current != NULL) {
-        if (current->next->data == value) {
+        if ((current->next != NULL) && (current->next->data == value)) {
             temp = current->next;
             current->next = current->next->next;
             free(temp);
