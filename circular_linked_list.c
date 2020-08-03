@@ -110,15 +110,19 @@ void delete_node(Node **head, int value)
 void print_list(Node *node)
 {
     Node *first_node = node;
+
+    if (node == NULL)
+        return;
     printf("%d ", node->data);
     node = node->next;
 
     while (node != NULL) {
-        if (node == first_node) break;
+        if (node == first_node)
+            break;
         printf("%d ", node->data);
         node = node->next;
     }
-    printf("%d\n", node->data);
+    printf("\n");
 }
 
 void free_list(Node *node)
